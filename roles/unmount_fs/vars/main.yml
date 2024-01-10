@@ -1,0 +1,2 @@
+disk_to_unpartition: "/dev/sdc"  
+mount_point: "/tmp/logs"
