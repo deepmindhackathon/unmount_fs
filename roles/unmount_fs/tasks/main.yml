@@ -1,28 +1,26 @@
 ---
-- name: Remove Disk Configuration
-  become: true
-  tasks:
-    - name: Unmount the partition
-      mount:
-        path: "{{ mount_point }}"
-        state: unmounted
-      ignore_errors: true
 
-    - name: Remove entry from /etc/fstab
-      lineinfile:
-        path: "/etc/fstab"
-        state: absent
-        regexp: "{{ disk_to_unpartition }}1"
-      ignore_errors: true
+- name: Unmount the partition
+  mount:
+    path: "{{ mount_point }}"
+    state: unmounted
+  ignore_errors: true
 
-    - name: Remove mount directory
-      file:
-        path: "{{ mount_point }}"
-        state: absent
+- name: Remove entry from /etc/fstab
+  lineinfile:
+    path: "/etc/fstab"
+    state: absent
+    regexp: "{{ disk_to_unpartition }}1"
+  ignore_errors: true
 
-    - name: Remove partition
-      parted:
-        device: "{{ disk_to_unpartition }}"
-        number: 1
-        state: absent
-      ignore_errors: true
+- name: Remove mount directory
+  file:
+    path: "{{ mount_point }}"
+    state: absent
+
+- name: Remove partition
+  parted:
+    device: "{{ disk_to_unpartition }}"
+    number: 1
+    state: absent
+  ignore_errors: true
